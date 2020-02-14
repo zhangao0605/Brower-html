@@ -2,7 +2,7 @@
     <!--<div class="footer_pad">-->
       <!--<dl class="footer_con">-->
         <!--<dt>-->
-          <!--THINKEY区块链浏览器是THINKEY官方的的区块链浏览器和分析平台-->
+          <!--THINKIUM区块链浏览器是THINKIUM官方的的区块链浏览器和分析平台-->
         <!--</dt>-->
         <!--<dd>-->
           <!--<ul>-->

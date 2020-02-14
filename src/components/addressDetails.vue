@@ -7,7 +7,7 @@
       {{$t('title.address_de')}}： <span style="color: #82848a;margin-left: 20px">{{slice_address1(get_data.address)}}</span>
     </div>
     <div class="con_title" style="font-size: 17px">
-      {{$t('title.amount')}}： <span style="color: #82848a;margin-left: 50px">{{scientificCounting(account_data.balances)}} <span>TUE</span></span>
+      {{$t('title.amount')}}： <span style="color: #82848a;margin-left: 50px">{{scientificCounting(account_data.balances)}} <span>TKM</span></span>
     </div>
     <div class="con_title" style="font-size: 17px;padding-bottom: 0">
       {{$t('table.ac_any_other')}}：
@@ -19,7 +19,7 @@
             <div >
               <span class="to_tr"style="color: #800080;" v-show="is_zh">{{chainid_change_zh(item.chainId)}}</span>
               <span class="to_tr"style="color: #800080;" v-show="!is_zh">{{chainid_change_en(item.chainId)}}</span><br>
-              <span>{{item.balance==''?0:scientificCounting(item.balance)}} TUE</span>
+              <span>{{item.balance==''?0:scientificCounting(item.balance)}} TKM</span>
             </div>
           </div>
           <!--<div class="ad_amount_deail_right">-->
@@ -80,7 +80,7 @@
         :label="$t('table.transfer_amount')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr ">{{scientificCounting(scope.row.value)}} TUE</span>
+          <span class="to_tr ">{{scientificCounting(scope.row.value)}} TKM</span>
         </template>
       </el-table-column>
     </el-table>

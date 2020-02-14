@@ -92,7 +92,7 @@
         :label="$t('table.transfer_amount')"
         align="center">
         <template slot-scope="scope">
-          <span>{{scientificCounting(scope.row.value)}} TUE</span>
+          <span>{{scientificCounting(scope.row.value)}} TKM</span>
         </template>
       </el-table-column>
       <!--<el-table-column-->
@@ -101,7 +101,7 @@
         <!--<template slot-scope="scope">-->
           <!--<span>-->
 
-<!--{{scientificCounting(scope.row.txCost)}} TUE-->
+<!--{{scientificCounting(scope.row.txCost)}} TKM-->
           <!--</span>-->
         <!--</template>-->
       <!--</el-table-column>-->
@@ -145,12 +145,13 @@
           {'name': '跨链转账撤销', 'value': 6},
         ],
         tr_en: [
-          {'name': 'Contract release', 'value': 1},
-          {'name': 'Contract transaction', 'value': 2},
-          {'name': 'Intra-chain trading', 'value': 3},
-          {'name': 'Cross-chain transfer withdrawal', 'value': 4},
-          {'name': 'Cross-chain transfer deposit', 'value': 5},
-          {'name': 'Cross-chain transfer cancellation', 'value': 6},
+          { name: "All", value: "" },
+          { name: "Contract release", value: 1 },
+          { name: "Contract transaction", value: 2 },
+          { name: "Intra-chain trading", value: 3 },
+          { name: "Cross-chain transfer withdrawal", value: 4 },
+          { name: "Cross-chain transfer deposit", value: 5 },
+          { name: "Cross-chain transfer cancellation", value: 6 }
         ],
         loading: false,
         currentPage: 1,

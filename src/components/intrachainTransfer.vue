@@ -81,16 +81,16 @@
           {{$t('table.transfer_amount')}}
         </div>
         <div class="it_all_con_right">
-          {{scientificCounting(all_data.value)}} TUE
+          {{scientificCounting(all_data.value)}} TKM
         </div>
       </div>
       <!--<div class="it_all_con">-->
-        <!--<div class="it_all_con_left">-->
-          <!--{{$t('table.transaction_fee')}}-->
-        <!--</div>-->
-        <!--<div class="it_all_con_right ">-->
-          <!--{{scientificCounting(all_data.txCost)}} TUE-->
-        <!--</div>-->
+      <!--<div class="it_all_con_left">-->
+      <!--{{$t('table.transaction_fee')}}-->
+      <!--</div>-->
+      <!--<div class="it_all_con_right ">-->
+      <!--{{scientificCounting(all_data.txCost)}} TKM-->
+      <!--</div>-->
       <!--</div>-->
       <div class="it_all_con">
         <div class="it_all_con_left it_all_con_left_last" style="line-height: 100px">
@@ -100,6 +100,18 @@
           {{all_data.input}}
         </div>
       </div>
+      <div class="it_all_con" v-show="all_data.chainId==2&&all_data.from=='0x1111111111111111111111111111111111111111'">
+        <div class="it_all_con_left" style="line-height:12">
+          {{$t('table.award_details')}}
+        </div>
+        <div class="it_all_con_right" style="line-height:1.5">
+          <p> 在 {{extraDetails.chain}} 链参与共识挖矿</p>
+          <p> 处于第 {{extraDetails.turn}} 个委员会</p>
+          <p> 处于该委员会期间共出块 {{extraDetails.block}} 个</p>
+          <p> 参与第 {{extraDetails.epoch}} 个千块共识</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -115,6 +127,12 @@
     data() {
       return {
         is_success: true,
+        extraDetails: {
+          chain: '',
+          turn: '',
+          block: '',
+          epoch: '',
+        },
         all_data: '',
         is_zh: true,
         tr_zh: [
@@ -141,6 +159,7 @@
         let data = this.$store.getters.home_search_tr_1
         getBlockNewTxPage(data).then(response => {
           this.all_data = response.data.transactionsList.dataList[0]
+          this.extraDetails = this.all_data.extraDetails
         })
 
       },
@@ -258,7 +277,7 @@
   }
 
   .it_con {
-   width: 100%;
+    width: 100%;
     margin-bottom: 80px;
   }
 

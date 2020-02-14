@@ -5,12 +5,12 @@ export default {
     header_main_network: 'Mainnet',
   },
   title: {
-    demonstration:'Chain structure demonstration system',
-    billion:'Billion',
-    data_node:"Data node",
-    consensus_node:"Consensus node",
-    task_chain:'Task chain',
-    trading_chain:'Trading chain',
+    demonstration: 'Chain structure demonstration system',
+    billion: 'Billion',
+    data_node: "Data node",
+    consensus_node: "Consensus node",
+    task_chain: 'Task chain',
+    trading_chain: 'Trading chain',
     split_subchain_id: 'Tradingchain ID',
     blockchain_details: 'Blockchain Details',
     transaction_details: 'Transaction Details',
@@ -44,10 +44,11 @@ export default {
     amount: 'Amount',
     check_content: 'Check content',
     rpt: 'Related party transaction',
-    return_address:'Return address'
+    return_address: 'Return address',
+    packaging_node: 'Packaging node',
   },
   prompt: {
-    prompt_1: 'Tip: Since THINKEY uses a layered multi-chain structure, the search block height shows the corresponding height on each chain.',
+    prompt_1: 'Tip: Since THINKIUM uses a layered multi-chain structure, the search block height shows the corresponding height on each chain.',
     prompt_2: 'Tip：The main chain and the Taskchain only record member elections on the chain, do not record general transactions, and the number of election transactions is not counted in the transaction chain.',
   },
   placeholder: {
@@ -64,6 +65,7 @@ export default {
   },
   table: {
     subchain_id: 'Taskchain ID',
+    state_secret_algorithm: 'State secret algorithm',
     block_height: 'Block',
     current_committee_member: 'Current Committeees',
     number_of_committee_members: 'Number of Committees',
@@ -95,10 +97,16 @@ export default {
     ac_any: 'TKT Value',
     ac_any_other: 'TKT Value Of Taskchain',
     ac_num: 'TKT Value',
-    issuer:'Issuer',
-    recipient:'Recipient',
-    call_record:'Call record',
-    cross_chain_transfer_contract:'Cross-chain transfer contract',
+    issuer: 'Issuer',
+    recipient: 'Recipient',
+    call_record: 'Call record',
+    cross_chain_transfer_contract: 'Cross-chain transfer contract',
+    award_details: 'Award details',
+    private_key: 'Private key',
+    public_key: 'Public key',
+    address: 'address',
+    traditional_encryption_algorithm: 'Traditional encryption algorithm',
+    state_secret_algorithm_generation: 'State secret algorithm generation',
   },
   download: {
     sdkdownload: 'SDK download',
@@ -109,7 +117,7 @@ export default {
     update_time: 'Update time',
     document_description: 'Document description',
     software_address: 'Software address',
-    view:'View',
-    _download:'Download',
+    view: 'View',
+    _download: 'Download',
   }
-  }
+}

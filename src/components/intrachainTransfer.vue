@@ -84,14 +84,14 @@
           {{scientificCounting(all_data.value)}} TKM
         </div>
       </div>
-      <!--<div class="it_all_con">-->
-      <!--<div class="it_all_con_left">-->
-      <!--{{$t('table.transaction_fee')}}-->
-      <!--</div>-->
-      <!--<div class="it_all_con_right ">-->
-      <!--{{scientificCounting(all_data.txCost)}} TKM-->
-      <!--</div>-->
-      <!--</div>-->
+      <div class="it_all_con">
+      <div class="it_all_con_left">
+      {{$t('table.transaction_fee')}}
+      </div>
+      <div class="it_all_con_right ">
+      {{scientificCounting(all_data.gasFee)}} TKM
+      </div>
+      </div>
       <div class="it_all_con">
         <div class="it_all_con_left it_all_con_left_last" style="line-height: 100px">
           {{$t('title.input_data')}}

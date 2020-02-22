@@ -95,16 +95,16 @@
           <span>{{scientificCounting(scope.row.value)}} TKM</span>
         </template>
       </el-table-column>
-      <!--<el-table-column-->
-        <!--:label="$t('table.transaction_fee')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>-->
+      <el-table-column
+        :label="$t('table.transaction_fee')"
+        align="center">
+        <template slot-scope="scope">
+          <span>
 
-<!--{{scientificCounting(scope.row.txCost)}} TKM-->
-          <!--</span>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
+{{scientificCounting(scope.row.gasFee)}} TKM
+          </span>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       background

@@ -333,13 +333,13 @@
           <span>{{scientificCounting(scope.row.value)}} TKM</span>
         </template>
       </el-table-column>
-      <!--<el-table-column-->
-        <!--:label="$t('table.transaction_fee')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{scientificCounting(scope.row.txCost)}}</span>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
+      <el-table-column
+        :label="$t('table.transaction_fee')"
+        align="center">
+        <template slot-scope="scope">
+          <span>{{scientificCounting(scope.row.gasFee)}} TKM</span>
+        </template>
+      </el-table-column>
     </el-table>
     <el-button style="width: 100%;margin-bottom: 50px;margin-top: 20px" type="primary"
                @click="to_transaction_information()">
@@ -746,87 +746,87 @@
         })
       },
 
-      drawing() {
-        let myChart = echarts.init(document.getElementById('echats_1'));
-        let option = {
-          series: [
-            {
-              min: 0,
-              max: 60000,
-              type: 'gauge',
-              data: [{value: this.marke.tps,}],
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: [
-                    [1, new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                      {
-                        offset: 0.1,
-                        color: "#BE55FF"
-                      },
-                      {
-                        offset: 0.2,
-                        color: "#964EFF"
-                      },
-                      {
-                        offset: 0.5,
-                        color: "#613BFF"
-                      }
-                    ])
-                    ]
-                  ]
-
-                }
-              },
-              detail: {
-                offsetCenter: [0, '60%'],
-                textStyle: {
-                  fontWeight: 'bolder',
-                  fontSize: 15
-                }
-              },
-            },
-
-          ]
-        };
-        myChart.setOption(option);
-      },
-      drawing_1() {
-        let myChart2 = echarts.init(document.getElementById('echats_2'));
-        let option2 = {
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: this.chain_market_info[0]
-          },
-          yAxis: {
-            type: 'value',
-
-          },
-          series: [
-            {
-              type: 'line',
-              smooth: true,
-              symbol: 'none',
-              sampling: 'average',
-              itemStyle: {
-                color: '#AB62F5'
-              },
-              areaStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: '#B4A3E6'
-                }, {
-                  offset: 1,
-                  color: '#EAD5F3'
-                }])
-              },
-              data: this.chain_market_info[1]
-            }
-          ]
-        };
-        myChart2.setOption(option2);
-      }
+      // drawing() {
+      //   let myChart = echarts.init(document.getElementById('echats_1'));
+      //   let option = {
+      //     series: [
+      //       {
+      //         min: 0,
+      //         max: 60000,
+      //         type: 'gauge',
+      //         data: [{value: this.marke.tps,}],
+      //         axisLine: {
+      //           show: true,
+      //           lineStyle: {
+      //             color: [
+      //               [1, new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+      //                 {
+      //                   offset: 0.1,
+      //                   color: "#BE55FF"
+      //                 },
+      //                 {
+      //                   offset: 0.2,
+      //                   color: "#964EFF"
+      //                 },
+      //                 {
+      //                   offset: 0.5,
+      //                   color: "#613BFF"
+      //                 }
+      //               ])
+      //               ]
+      //             ]
+      //
+      //           }
+      //         },
+      //         detail: {
+      //           offsetCenter: [0, '60%'],
+      //           textStyle: {
+      //             fontWeight: 'bolder',
+      //             fontSize: 15
+      //           }
+      //         },
+      //       },
+      //
+      //     ]
+      //   };
+      //   myChart.setOption(option);
+      // },
+      // drawing_1() {
+      //   let myChart2 = echarts.init(document.getElementById('echats_2'));
+      //   let option2 = {
+      //     xAxis: {
+      //       type: 'category',
+      //       boundaryGap: false,
+      //       data: this.chain_market_info[0]
+      //     },
+      //     yAxis: {
+      //       type: 'value',
+      //
+      //     },
+      //     series: [
+      //       {
+      //         type: 'line',
+      //         smooth: true,
+      //         symbol: 'none',
+      //         sampling: 'average',
+      //         itemStyle: {
+      //           color: '#AB62F5'
+      //         },
+      //         areaStyle: {
+      //           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+      //             offset: 0,
+      //             color: '#B4A3E6'
+      //           }, {
+      //             offset: 1,
+      //             color: '#EAD5F3'
+      //           }])
+      //         },
+      //         data: this.chain_market_info[1]
+      //       }
+      //     ]
+      //   };
+      //   myChart2.setOption(option2);
+      // }
     }
     ,
     created() {
@@ -847,12 +847,12 @@
 
     },
     mounted() {
-      window.onresize = () => {
-        let myChart = echarts.init(document.getElementById('echats_1'));
-        let myChart1 = echarts.init(document.getElementById('echats_2'));
-        myChart.resize();
-        myChart1.resize();
-      };
+      // window.onresize = () => {
+      //   let myChart = echarts.init(document.getElementById('echats_1'));
+      //   let myChart1 = echarts.init(document.getElementById('echats_2'));
+      //   myChart.resize();
+      //   myChart1.resize();
+      // };
     }
     ,
     computed: {

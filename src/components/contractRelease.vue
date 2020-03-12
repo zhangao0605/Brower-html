@@ -87,11 +87,20 @@
         <div class="cr_all_con_left cr_all_con_left_last" style="line-height: 100px">
           {{$t('table.input_data')}}
         </div>
-        <div class="cr_all_con_right cr_all_con_right_last">
+        <div class="cr_all_con_right it_all_con_right_last" v-show="utf8_is">
           {{all_data.input}}
+        </div>
+        <div class="cr_all_con_right it_all_con_right_last" v-show="!utf8_is">
+          {{utf8_input(all_data.input)}}
         </div>
       </div>
     </div>
+    <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="utf8_is">
+      转换文字
+    </el-button>
+    <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="!utf8_is">
+      原始数据
+    </el-button>
   </div>
 </template>
 
@@ -100,9 +109,10 @@
     getBlockNewTxPage,
 
   } from '../api/interface'
+
   export default {
     name: "contract_release",
-    data(){
+    data() {
       return {
         is_success: true,
         all_data: '',
@@ -124,9 +134,13 @@
           {'name': 'Cross-chain transfer cancellation', 'value': 6},
         ],
         chain_list: {},
+        utf8_is: true,
       }
     },
     methods: {
+      utf8_input_tr() {
+        this.utf8_is = !this.utf8_is
+      },
       retrieve_data() {
         let data = this.$store.getters.home_search_tr_4
         getBlockNewTxPage(data).then(response => {
@@ -238,6 +252,28 @@
     top: 3px;
   }
 
+  .it_all_con_right_last::-webkit-scrollbar { /*滚动条整体样式*/
+    width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+
+  .it_all_con_right_last::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(218, 218, 218, 0.2);
+    background: #b5b5b5;
+  }
+
+  .it_all_con_right_last::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background: #ffffff;
+  }
+
+  .it_all_con_right_last {
+    max-height: 300px;
+    height: 100px;
+    overflow: auto;
+  }
   .state_error {
     color: #F56C6C;
     font-size: 25px;

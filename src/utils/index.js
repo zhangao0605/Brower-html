@@ -2,6 +2,8 @@ import {getChainInfoStruct} from '../api/interface'
 import moment from 'moment'
 import BigNumber from "bignumber.js"
 import Iban from '../../static/web3-eth-iban/src/index'
+
+var utf8 = require('utf8');
 export default {
   install(Vue, opt) {
     Vue.prototype.tableHeaderColor = function ({row, column, rowIndex, columnIndex}) {
@@ -94,6 +96,33 @@ export default {
         // }
       }
       return num
+    }
+    Vue.prototype.utf8_input = function (hex) {
+
+      if (hex == '' || hex == undefined) {
+        return '';
+      } else {
+        let str = "";
+        let i = 0, l = hex.length;
+        if (hex.substring(0, 2) === '0x') {
+          i = 2;
+        }
+        for (; i < l; i += 2) {
+          let code = parseInt(hex.substr(i, 2), 16);
+          if (code === 0)
+            break;
+          str += String.fromCharCode(code);
+        }
+        let val = ''
+        try {
+          val = utf8.decode(str)
+        } catch (e) {
+          val = e
+        }
+        return val;
+      }
+
+
     }
     Vue.prototype.slice_hash = function (e) {
       if (e == '' || e == null || e == undefined) {

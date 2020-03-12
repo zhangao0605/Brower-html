@@ -85,19 +85,11 @@
         </div>
       </div>
       <div class="it_all_con">
-      <div class="it_all_con_left">
-      {{$t('table.transaction_fee')}}
-      </div>
-      <div class="it_all_con_right ">
-      {{scientificCounting(all_data.gasFee)}} TKM
-      </div>
-      </div>
-      <div class="it_all_con">
-        <div class="it_all_con_left it_all_con_left_last" style="line-height: 100px">
-          {{$t('title.input_data')}}
+        <div class="it_all_con_left">
+          {{$t('table.transaction_fee')}}
         </div>
-        <div class="it_all_con_right it_all_con_right_last ">
-          {{all_data.input}}
+        <div class="it_all_con_right ">
+          {{scientificCounting(all_data.gasFee)}} TKM
         </div>
       </div>
       <div class="it_all_con" v-show="all_data.chainId==2&&all_data.from=='0x1111111111111111111111111111111111111111'">
@@ -111,8 +103,25 @@
           <p> 参与第 {{extraDetails.epoch}} 个千块共识</p>
         </div>
       </div>
+      <div class="it_all_con">
+        <div class="it_all_con_left it_all_con_left_last" style="line-height: 100px">
+          {{$t('title.input_data')}}
+        </div>
 
+        <div class="it_all_con_right it_all_con_right_last" v-show="utf8_is">
+          {{all_data.input}}
+        </div>
+        <div class="it_all_con_right it_all_con_right_last" v-show="!utf8_is">
+          {{utf8_input(all_data.input)}}
+        </div>
+      </div>
     </div>
+    <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="utf8_is">
+      转换文字
+    </el-button>
+    <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="!utf8_is">
+      原始数据
+    </el-button>
   </div>
 </template>
 
@@ -152,9 +161,14 @@
           {'name': 'Cross-chain transfer cancellation', 'value': 6},
         ],
         chain_list: {},
+        utf8_is: true,
+
       }
     },
     methods: {
+      utf8_input_tr() {
+        this.utf8_is = !this.utf8_is
+      },
       initialization_data() {
         let data = this.$store.getters.home_search_tr_1
         getBlockNewTxPage(data).then(response => {
@@ -306,7 +320,7 @@
   }
 
   .it_all_con_right_last {
-    height: 100px;
+    max-height: 300px;
     overflow: auto;
   }
 

@@ -97,11 +97,21 @@
         <div class="cta_all_con_left cta_all_con_left_last" style="line-height: 100px">
           {{$t('table.input_data')}}
         </div>
-        <div class="cta_all_con_right cta_all_con_right_last">
+        <div class="cta_all_con_right cta_all_con_right_last" v-show="utf8_is">
           {{all_data.input}}
         </div>
+        <div class="cta_all_con_right cta_all_con_right_last" v-show="!utf8_is">
+          {{utf8_input(all_data.input)}}
+        </div>
       </div>
+
     </div>
+    <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="utf8_is">
+      转换文字
+    </el-button>
+    <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="!utf8_is">
+      原始数据
+    </el-button>
   </div>
 </template>
 
@@ -135,9 +145,13 @@
           {'name': 'Cross-chain transfer cancellation', 'value': 6},
         ],
         chain_list: {},
+        utf8_is: true,
       }
     },
     methods: {
+      utf8_input_tr() {
+        this.utf8_is = !this.utf8_is
+      },
       retrieve_data() {
         let data = this.$store.getters.home_search_tr_3
         getBlockNewTxPage(data).then(response => {
@@ -295,7 +309,8 @@
   }
 
   .cta_all_con_right_last {
-    height: 100px;
+    /*height: 100px;*/
+    max-height: 300px;
     overflow: auto;
   }
 

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 const service = axios.create({
-  // baseURL: document.location.protocol+'PublicChainBrowser/'+ window.location.search,
+  baseURL: document.location.protocol+'PublicChainBrowser/'+ window.location.search,
   // baseURL: 'http://browser.thinkey.org/PublicChainBrowser/',
-  baseURL: 'http://browser.thinkey.xyz/PublicChainBrowser/',
+  // baseURL: 'http://browser.thinkey.xyz/PublicChainBrowser/',
   // baseURL: 'https://publicchain.thinkey.xyz/PublicChainBrowser/',
   // baseURL: 'http://192.168.1.108:8500/PublicChainBrowser/',
   // withCredentials: true,

@@ -83,6 +83,13 @@
           <span class="to_tr ">{{scientificCounting(scope.row.value)}} TKM</span>
         </template>
       </el-table-column>
+      <el-table-column
+        :label="$t('table.transaction_fee')"
+        align="center">
+        <template slot-scope="scope">
+          <span>{{scientificCounting(scope.row.gasFee)}} TKM</span>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       background

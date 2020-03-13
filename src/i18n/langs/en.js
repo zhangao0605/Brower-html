@@ -107,6 +107,8 @@ export default {
     address: 'address',
     traditional_encryption_algorithm: 'Traditional encryption algorithm',
     state_secret_algorithm_generation: 'State secret algorithm generation',
+    convert_text: 'Convert text',
+    raw_data: 'Raw data',
   },
   download: {
     sdkdownload: 'SDK download',

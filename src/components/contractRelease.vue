@@ -96,10 +96,10 @@
       </div>
     </div>
     <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="utf8_is">
-      转换文字
+      {{$t('table.convert_text')}}
     </el-button>
     <el-button type="primary" style="margin-left: 25%;margin-top: 20px" @click="utf8_input_tr()" v-show="!utf8_is">
-      原始数据
+      {{$t('table.raw_data')}}
     </el-button>
   </div>
 </template>

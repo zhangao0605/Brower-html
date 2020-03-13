@@ -107,6 +107,8 @@ export default {
     address: '地址',
     traditional_encryption_algorithm: '传统国际加密算法生成',
     state_secret_algorithm_generation: '国密算法生成',
+    convert_text: '转换文字',
+    raw_data: '原始数据',
   },
   download: {
     sdkdownload: 'SDK下载',

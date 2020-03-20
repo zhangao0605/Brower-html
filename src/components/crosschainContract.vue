@@ -24,8 +24,10 @@
         :label="$t('table.own_chain')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr show_color_choose" v-show="is_zh" @click="to_chain_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
-          <span class="to_tr show_color_choose" v-show="!is_zh" @click="to_chain_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==0" @click="to_chain_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==1" @click="to_chain_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==2" @click="to_chain_interface(scope.row.chainId)">{{chainid_change_ja(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==3" @click="to_chain_interface(scope.row.chainId)">{{chainid_change_ko(scope.row.chainId)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -98,7 +100,7 @@
         pagesize: 10,
         totla: 0,
         all_data: '',
-        is_zh: true,
+        is_zh: 0,
         chain_list: {},
       }
     },
@@ -132,6 +134,24 @@
       chainid_change_en(e) {
         let a = ''
         this.chain_list.en_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
           if (e == item.value) {
             a = item.label
           }
@@ -251,10 +271,14 @@
     created() {
       this.all_data = this.$store.getters.cross_chain_contract
       this.chain_list = this.getChainInfoStruct()
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
       }
       this.retrieve_data()
     },
@@ -266,9 +290,13 @@
     watch: {
       lang(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
-        } else {
-          this.is_zh = false
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       }
     }

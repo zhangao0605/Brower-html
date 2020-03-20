@@ -3,9 +3,13 @@ import VueI18n from 'vue-i18n'
 import Cookies from 'js-cookie'
 import elementEnLocale from 'element-ui/lib/locale/lang/en'
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'
+import elementJaLocale from 'element-ui/lib/locale/lang/ja'
+import elementKoLocale from 'element-ui/lib/locale/lang/ko'
 // import elementEsLocale from 'element-ui/lib/locale/lang/es'
 import enLocale from './en'
 import zhLocale from './zh'
+import jaLocale from './ja'
+import koLocale from './ko'
 // import esLocale from './es'
 
 Vue.use(VueI18n)
@@ -20,10 +24,14 @@ const messages = {
     ...elementZhLocale
   }
   ,
-  // es: {
-  //   ...esLocale,
-  //   ...elementEsLocale
-  // }
+  ja: {
+    ...jaLocale,
+    ...elementJaLocale
+  },
+  ko: {
+    ...koLocale,
+    ...elementKoLocale
+  }
 }
 export function getLanguage() {
   const chooseLanguage = Cookies.get('language')

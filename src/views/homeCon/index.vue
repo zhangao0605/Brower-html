@@ -101,42 +101,42 @@
 
     </div>
     <!--<div class="block_related">-->
-      <!--<div class="block_related_item_1">-->
-        <!--<div class="block_related_item_padding">-->
-          <!--<div class="chain_part_item_title">-->
-            <!--{{$t("title.network_market_value")}}-->
-          <!--</div>-->
-          <!--<div class="chain_part_item_img_6">-->
-            <!--<div class="chain_part_item_text_1">-->
-              <!--$ {{NewTickers_2}} {{$t("title.billion")}}-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
+    <!--<div class="block_related_item_1">-->
+    <!--<div class="block_related_item_padding">-->
+    <!--<div class="chain_part_item_title">-->
+    <!--{{$t("title.network_market_value")}}-->
+    <!--</div>-->
+    <!--<div class="chain_part_item_img_6">-->
+    <!--<div class="chain_part_item_text_1">-->
+    <!--$ {{NewTickers_2}} {{$t("title.billion")}}-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
-      <!--<div class="block_related_item_2">-->
-        <!--<div class="block_related_item_padding">-->
-          <!--<div class="chain_part_item_title">-->
+    <!--<div class="block_related_item_2">-->
+    <!--<div class="block_related_item_padding">-->
+    <!--<div class="chain_part_item_title">-->
 
-            <!--{{$t("title.total_online_transaction_volume")}}-->
-          <!--</div>-->
-          <!--<div id="echats_2" style="width:110%;height:100%">-->
+    <!--{{$t("title.total_online_transaction_volume")}}-->
+    <!--</div>-->
+    <!--<div id="echats_2" style="width:110%;height:100%">-->
 
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
-      <!--<div class="block_related_item_3">-->
-        <!--<div class="block_related_item_padding">-->
-          <!--<div class="chain_part_item_title">-->
-            <!--TPS-->
-          <!--</div>-->
-          <!--<div id="echats_1" style="width:120%;height:120%">-->
+    <!--<div class="block_related_item_3">-->
+    <!--<div class="block_related_item_padding">-->
+    <!--<div class="chain_part_item_title">-->
+    <!--TPS-->
+    <!--</div>-->
+    <!--<div id="echats_1" style="width:120%;height:120%">-->
 
-          <!--</div>-->
-        <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
-      <!--</div>-->
+    <!--</div>-->
     <!--</div>-->
     <div class="hc_overview hc_overview_1">
       <div>
@@ -150,10 +150,10 @@
               @click="click_main_height(chain_data.currentheight)">{{chain_data.currentheight||0}}</span>
       </div>
       <!--<div style="border-right:1px solid #DCDFE6 ">-->
-        <!--<span class="hc_overview_he">{{$t("title.current_committee_member")}}</span>-->
-        <!--<br/>-->
-        <!--<br/>-->
-        <!--<span class="color_choose" @click="to_main_chaincommittee(0,0)">{{chain_data.currentcomm}}</span>-->
+      <!--<span class="hc_overview_he">{{$t("title.current_committee_member")}}</span>-->
+      <!--<br/>-->
+      <!--<br/>-->
+      <!--<span class="color_choose" @click="to_main_chaincommittee(0,0)">{{chain_data.currentcomm}}</span>-->
       <!--</div>-->
       <div style="border-right:1px solid #DCDFE6 ">
         <span
@@ -163,10 +163,10 @@
         <span class="">{{chain_data.ChildrenCount||0}}</span>
       </div>
       <!--<div>-->
-        <!--<span class="hc_overview_he">{{$t("title.miner")}}</span>-->
-        <!--<br/>-->
-        <!--<br/>-->
-        <!--<span class="color_choose">{{slice_hash(chain_data.miner)||''}}</span>-->
+      <!--<span class="hc_overview_he">{{$t("title.miner")}}</span>-->
+      <!--<br/>-->
+      <!--<br/>-->
+      <!--<span class="color_choose">{{slice_hash(chain_data.miner)||''}}</span>-->
       <!--</div>-->
     </div>
     <div class="con_title ">
@@ -182,8 +182,10 @@
         :label="$t('table.subchain_id')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr color_choose" v-show="is_zh" @click="to_subchain_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
-          <span class="to_tr color_choose" v-show="!is_zh" @click="to_subchain_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==0" @click="to_subchain_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==1" @click="to_subchain_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==2" @click="to_subchain_interface(scope.row.chainId)">{{chainid_change_ja(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==3" @click="to_subchain_interface(scope.row.chainId)">{{chainid_change_ko(scope.row.chainId)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -194,11 +196,11 @@
         </template>
       </el-table-column>
       <!--<el-table-column-->
-        <!--:label="$t('table.current_committee_member')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span class="to_tr color_choose" @click="to_main_chaincommittee(1,scope.row.chainId)">{{scope.row.currentcomm}}</span>-->
-        <!--</template>-->
+      <!--:label="$t('table.current_committee_member')"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span class="to_tr color_choose" @click="to_main_chaincommittee(1,scope.row.chainId)">{{scope.row.currentcomm}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column
         :label="$t('table.number_of_fragments')"
@@ -217,11 +219,11 @@
         </template>
       </el-table-column>
       <!--<el-table-column-->
-        <!--:label="$t('table.miner')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{slice_hash(scope.row.miner)}}</span>-->
-        <!--</template>-->
+      <!--:label="$t('table.miner')"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{slice_hash(scope.row.miner)}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
     </el-table>
     <div class="con_title ">
@@ -237,8 +239,10 @@
         :label="$t('table.subchain_id')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr color_choose" v-show="is_zh" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
-          <span class="to_tr color_choose" v-show="!is_zh" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==0" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==1" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==2" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_ja(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==3" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_ko(scope.row.chainId)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -249,11 +253,11 @@
         </template>
       </el-table-column>
       <!--<el-table-column-->
-        <!--:label="$t('table.current_committee_member')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span class="to_tr color_choose" @click="to_Unfragmented_chaincommittee(scope.row.chainId)">{{scope.row.currentcomm}}</span>-->
-        <!--</template>-->
+      <!--:label="$t('table.current_committee_member')"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span class="to_tr color_choose" @click="to_Unfragmented_chaincommittee(scope.row.chainId)">{{scope.row.currentcomm}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column
         :label="$t('table.trading_volume')"
@@ -263,11 +267,11 @@
         </template>
       </el-table-column>
       <!--<el-table-column-->
-        <!--:label="$t('table.miner')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span>{{slice_hash(scope.row.miner)}}</span>-->
-        <!--</template>-->
+      <!--:label="$t('table.miner')"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{slice_hash(scope.row.miner)}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
     </el-table>
     <div class="con_title ">
@@ -291,8 +295,10 @@
         :label="$t('table.own_chain')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr color_choose" v-show="is_zh" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
-          <span class="to_tr color_choose" v-show="!is_zh" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==0" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==1" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==2" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_ja(scope.row.chainId)}}</span>
+          <span class="to_tr color_choose" v-show="is_zh==3" @click="to_unfragmented_interface(scope.row.chainId)">{{chainid_change_ko(scope.row.chainId)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -306,8 +312,10 @@
         :label="$t('table.transaction_type')"
         align="center">
         <template slot-scope="scope">
-          <span v-show="is_zh">{{tr_change_zh(scope.row.txType)}}</span>
-          <span v-show="!is_zh">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==0">{{tr_change_zh(scope.row.txType)}}</span>
+          <span v-show="is_zh==1">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==2">{{tr_change_ja(scope.row.txType)}}</span>
+          <span v-show="is_zh==3">{{tr_change_ko(scope.row.txType)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -375,7 +383,7 @@
         loading: false,
         loading1: false,
         chain_list: {},
-        is_zh: true,
+        is_zh: 0,
         tr_zh: [
           {'name': '合约发布', 'value': 1},
           {'name': '合约交易', 'value': 2},
@@ -392,11 +400,29 @@
           {'name': 'Cross-chain transfer deposit', 'value': 5},
           {'name': 'Cross-chain transfer cancellation', 'value': 6},
         ],
+        tr_ja: [
+          {name: "全部", value: ""},
+          {name: "契約解除", value: 1},
+          {name: "契約取引", value: 2},
+          {name: "チェーン内トランザクション", value: 3},
+          {name: "クロスチェーン転送の引き出し", value: 4},
+          {name: "クロスチェーン振込預金", value: 5},
+          {name: "クロスチェーン転送キャンセル", value: 6}
+        ],
+        tr_ko: [
+          {name: "모두", value: ""},
+          {name: "계약 해제", value: 1},
+          {name: "계약 거래", value: 2},
+          {name: "인체 인 거래", value: 3},
+          {name: "교차 체인 이체 인출", value: 4},
+          {name: "교차 체인 이체 예금", value: 5},
+          {name: "교차 체인 전송 취소", value: 6}
+        ],
         set_sta: '',
         chain_info: '',
         chain_market_info: [],
-        NewTickers_1:0,
-        NewTickers_2:0
+        NewTickers_1: 0,
+        NewTickers_2: 0
       }
     },
     methods: {
@@ -445,8 +471,12 @@
         if (this.search_height == '') {
           if (this.$store.getters.language == 'en') {
             this.$message.error('The query block height cannot be empty!');
-          } else {
+          } else if (this.$store.getters.language == 'zh') {
             this.$message.error('查询区块高度不能为空！');
+          }else if (this.$store.getters.language == 'ja') {
+            this.$message.error('クエリブロックの高さは空にできません！');
+          }else if (this.$store.getters.language == 'ko') {
+            this.$message.error('쿼리 블록 높이는 비워 둘 수 없습니다！');
           }
 
         } else {
@@ -461,8 +491,12 @@
             if (response.data.dataList.length == 0) {
               if (this.$store.getters.language == 'en') {
                 this.$message.error('The current block height query result is empty, please check and enter again!');
-              } else {
+              } else if (this.$store.getters.language == 'zh') {
                 this.$message.error('当前区块高度查询结果为空，请检查后再次输入！');
+              }else if (this.$store.getters.language == 'ja') {
+                this.$message.error('現在のブロックの高さのクエリ結果は空です。チェックした後にもう一度入力してください！');
+              }else if (this.$store.getters.language == 'ko') {
+                this.$message.error('현재 블록 높이 쿼리 결과가 비어 있습니다. 확인 후 다시 입력하십시오！');
               }
 
             } else {
@@ -478,18 +512,22 @@
         if (this.search_transaction == '') {
           if (this.$store.getters.language == 'en') {
             this.$message.error('Query transaction details transaction hash/account address cannot be empty!');
-          } else {
+          } else if(this.$store.getters.language == 'zh') {
             this.$message.error('查询交易详情账户详情不能为空！');
+          }else if(this.$store.getters.language == 'ja') {
+            this.$message.error('取引の詳細のクエリアカウントの詳細は空にできません！');
+          }else if(this.$store.getters.language == 'ko') {
+            this.$message.error('거래 세부 정보 조회 계정 세부 사항은 비워 둘 수 없습니다.！');
           }
 
         } else {
-          if(this.search_transaction.length == 35){
-            let adress16=this.to_16_decimal(this.search_transaction)
-            let data = {"chainId": '', "address":adress16}
+          if (this.search_transaction.length == 35) {
+            let adress16 = this.to_16_decimal(this.search_transaction)
+            let data = {"chainId": '', "address": adress16}
             this.$store.dispatch('app/setAddressDetails', data).then(() => {
               this.$router.push({path: '/address_details'})
             })
-          }else {
+          } else {
             let data = {
               'page': 1,
               'chainId': '',
@@ -500,36 +538,35 @@
               if (response.data.transactionsList.dataList.length == 0) {
                 if (this.$store.getters.language == 'en') {
                   this.$message.error('The current transaction details transaction hash/account address query result is empty, please check and enter again!');
-                } else {
+                } else if(this.$store.getters.language == 'zh')  {
                   this.$message.error('当前交易详情账户详情查询结果为空，请检查后再次输入！');
+                }else if(this.$store.getters.language == 'ja') {
+                  this.$message.error('現在の取引の詳細アカウントの詳細のクエリ結果は空です。もう一度確認して入力してください！');
+                }else if(this.$store.getters.language == 'ko') {
+                  this.$message.error('현재 거래 세부 정보 계정 세부 사항 조회 결과가 비어 있습니다. 확인 후 다시 입력하십시오.！');
                 }
               } else {
                 if (response.data.transactionsList.dataList[0].txType == 3) {
                   this.$store.dispatch('app/setSearchTr1', data).then(() => {
                     this.$router.push({path: '/intrachain_transfer'})
                   })
-                }
-                else if (response.data.transactionsList.dataList[0].txType == 2) {
+                } else if (response.data.transactionsList.dataList[0].txType == 2) {
                   this.$store.dispatch('app/setSearchTr3', data).then(() => {
                     this.$router.push({path: '/contract_transaction'})
                   })
-                }
-                else if (response.data.transactionsList.dataList[0].txType == 1) {
+                } else if (response.data.transactionsList.dataList[0].txType == 1) {
                   this.$store.dispatch('app/setSearchTr4', data).then(() => {
                     this.$router.push({path: '/contract_release'})
                   })
-                }
-                else if (response.data.transactionsList.dataList[0].txType == 4) {
+                } else if (response.data.transactionsList.dataList[0].txType == 4) {
                   this.$store.dispatch('app/setSearchTr2', data).then(() => {
                     this.$router.push({path: '/transfer_withdrawal'})
                   })
-                }
-                else if (response.data.transactionsList.dataList[0].txType == 5) {
+                } else if (response.data.transactionsList.dataList[0].txType == 5) {
                   this.$store.dispatch('app/setSearchTr5', data).then(() => {
                     this.$router.push({path: '/transfer_deposit'})
                   })
-                }
-                else if (response.data.transactionsList.dataList[0].txType == 6) {
+                } else if (response.data.transactionsList.dataList[0].txType == 6) {
                   this.$store.dispatch('app/setSearchTr6', data).then(() => {
                     this.$router.push({path: '/transfer_cancellation'})
                   })
@@ -577,6 +614,42 @@
         this.tr_en.forEach((item, index) => {
           if (e == item.value) {
             a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ja(e) {
+        let a = ''
+        this.tr_ja.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ko(e) {
+        let a = ''
+        this.tr_ko.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
           }
         })
         return a
@@ -703,28 +776,23 @@
           this.$store.dispatch('app/setSearchTr1', data).then(() => {
             this.$router.push({path: '/intrachain_transfer'})
           })
-        }
-        else if (type == 2) {
+        } else if (type == 2) {
           this.$store.dispatch('app/setSearchTr3', data).then(() => {
             this.$router.push({path: '/contract_transaction'})
           })
-        }
-        else if (type == 1) {
+        } else if (type == 1) {
           this.$store.dispatch('app/setSearchTr4', data).then(() => {
             this.$router.push({path: '/contract_release'})
           })
-        }
-        else if (type == 4) {
+        } else if (type == 4) {
           this.$store.dispatch('app/setSearchTr2', data).then(() => {
             this.$router.push({path: '/transfer_withdrawal'})
           })
-        }
-        else if (type == 5) {
+        } else if (type == 5) {
           this.$store.dispatch('app/setSearchTr5', data).then(() => {
             this.$router.push({path: '/transfer_deposit'})
           })
-        }
-        else if (type == 6) {
+        } else if (type == 6) {
           this.$store.dispatch('app/setSearchTr6', data).then(() => {
             this.$router.push({path: '/transfer_cancellation'})
           })
@@ -745,95 +813,32 @@
           this.chain_info = response.data
         })
       },
+    }
+    ,
+    computed: {
+      lang() {
+        if (this.$store.getters.language == 'zh') {
+          this.NewTickers_2 = this.NewTickers_1
+        } else {
 
-      // drawing() {
-      //   let myChart = echarts.init(document.getElementById('echats_1'));
-      //   let option = {
-      //     series: [
-      //       {
-      //         min: 0,
-      //         max: 60000,
-      //         type: 'gauge',
-      //         data: [{value: this.marke.tps,}],
-      //         axisLine: {
-      //           show: true,
-      //           lineStyle: {
-      //             color: [
-      //               [1, new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      //                 {
-      //                   offset: 0.1,
-      //                   color: "#BE55FF"
-      //                 },
-      //                 {
-      //                   offset: 0.2,
-      //                   color: "#964EFF"
-      //                 },
-      //                 {
-      //                   offset: 0.5,
-      //                   color: "#613BFF"
-      //                 }
-      //               ])
-      //               ]
-      //             ]
-      //
-      //           }
-      //         },
-      //         detail: {
-      //           offsetCenter: [0, '60%'],
-      //           textStyle: {
-      //             fontWeight: 'bolder',
-      //             fontSize: 15
-      //           }
-      //         },
-      //       },
-      //
-      //     ]
-      //   };
-      //   myChart.setOption(option);
-      // },
-      // drawing_1() {
-      //   let myChart2 = echarts.init(document.getElementById('echats_2'));
-      //   let option2 = {
-      //     xAxis: {
-      //       type: 'category',
-      //       boundaryGap: false,
-      //       data: this.chain_market_info[0]
-      //     },
-      //     yAxis: {
-      //       type: 'value',
-      //
-      //     },
-      //     series: [
-      //       {
-      //         type: 'line',
-      //         smooth: true,
-      //         symbol: 'none',
-      //         sampling: 'average',
-      //         itemStyle: {
-      //           color: '#AB62F5'
-      //         },
-      //         areaStyle: {
-      //           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-      //             offset: 0,
-      //             color: '#B4A3E6'
-      //           }, {
-      //             offset: 1,
-      //             color: '#EAD5F3'
-      //           }])
-      //         },
-      //         data: this.chain_market_info[1]
-      //       }
-      //     ]
-      //   };
-      //   myChart2.setOption(option2);
-      // }
+          this.NewTickers_2 = (Number(this.NewTickers_1) / 10).toFixed(3)
+        }
+        return this.NewTickers_2;
+      },
+      lang_1() {
+        return this.$store.getters.language;
+      }
     }
     ,
     created() {
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
       }
       this.chain_list = this.getChainInfoStruct()
       // this.getMainPageInfo()
@@ -846,36 +851,16 @@
       // this.getTickers()
 
     },
-    mounted() {
-      // window.onresize = () => {
-      //   let myChart = echarts.init(document.getElementById('echats_1'));
-      //   let myChart1 = echarts.init(document.getElementById('echats_2'));
-      //   myChart.resize();
-      //   myChart1.resize();
-      // };
-    }
-    ,
-    computed: {
-      lang() {
-        if(this.$store.getters.language=='zh'){
-          this.NewTickers_2=this.NewTickers_1
-        }else {
-
-          this.NewTickers_2=(Number(this.NewTickers_1)/10).toFixed(3)
-        }
-        return this.NewTickers_2;
-      },
-      lang_1(){
-        return this.$store.getters.language;
-      }
-    }
-    ,
     watch: {
       lang_1(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
-        } else {
-          this.is_zh = false
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       },
       lang(a, b) {
@@ -975,7 +960,7 @@
 
   .chain_part_item_text_1 {
     text-align: center;
-    font-size:25px;
+    font-size: 25px;
     font-weight: bold;
     line-height: 7;
     color: #5D14CE;

@@ -4,8 +4,10 @@
     {{$t('title.trading_information')}}
   </div>
     <div class="con_title" style="font-size: 17px;padding-bottom: 0;margin-top: 10px">
-      <span class=" " v-show="is_zh" >{{chainid_change_zh(all_data.chainId)+'>'+all_data.height}}</span>
-      <span class=" " v-show="!is_zh">{{chainid_change_en(all_data.chainId)+'>'+all_data.height}}</span>
+      <span class=" " v-show="is_zh==0" >{{chainid_change_zh(all_data.chainId)+'>'+all_data.height}}</span>
+      <span class=" " v-show="is_zh==1">{{chainid_change_en(all_data.chainId)+'>'+all_data.height}}</span>
+      <span class=" " v-show="is_zh==2">{{chainid_change_ja(all_data.chainId)+'>'+all_data.height}}</span>
+      <span class=" " v-show="is_zh==3">{{chainid_change_ko(all_data.chainId)+'>'+all_data.height}}</span>
     </div>
     <!--交易信息列表-->
     <el-table
@@ -26,8 +28,10 @@
         :label="$t('table.own_chain')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr show_color_choose" v-show="is_zh" @click="to_chain(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
-          <span class="to_tr show_color_choose" v-show="!is_zh" @click="to_chain(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==0" @click="to_chain(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==1" @click="to_chain(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==2" @click="to_chain(scope.row.chainId)">{{chainid_change_ja(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==3" @click="to_chain(scope.row.chainId)">{{chainid_change_ko(scope.row.chainId)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -41,8 +45,10 @@
         :label="$t('table.transaction_type')"
         align="center">
         <template slot-scope="scope">
-          <span v-show="is_zh">{{tr_change_zh(scope.row.txType)}}</span>
-          <span v-show="!is_zh">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==0">{{tr_change_zh(scope.row.txType)}}</span>
+          <span v-show="is_zh==1">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==2">{{tr_change_ja(scope.row.txType)}}</span>
+          <span v-show="is_zh==3">{{tr_change_ko(scope.row.txType)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -103,7 +109,7 @@
         value: '',
         value1: '',
         tableData: [],
-        is_zh: true,
+        is_zh: 0,
         tr_zh: [
           {'name': '全部', 'value': ''},
           {'name': '合约发布', 'value': 1},
@@ -120,6 +126,24 @@
           {'name': 'Cross-chain transfer withdrawal', 'value': 4},
           {'name': 'Cross-chain transfer deposit', 'value': 5},
           {'name': 'Cross-chain transfer cancellation', 'value': 6},
+        ],
+        tr_ja: [
+          {name: "全部", value: ""},
+          {name: "契約解除", value: 1},
+          {name: "契約取引", value: 2},
+          {name: "チェーン内トランザクション", value: 3},
+          {name: "クロスチェーン転送の引き出し", value: 4},
+          {name: "クロスチェーン振込預金", value: 5},
+          {name: "クロスチェーン転送キャンセル", value: 6}
+        ],
+        tr_ko: [
+          {name: "모두", value: ""},
+          {name: "계약 해제", value: 1},
+          {name: "계약 거래", value: 2},
+          {name: "인체 인 거래", value: 3},
+          {name: "교차 체인 이체 인출", value: 4},
+          {name: "교차 체인 이체 예금", value: 5},
+          {name: "교차 체인 전송 취소", value: 6}
         ],
         loading: false,
         currentPage: 1,
@@ -159,6 +183,42 @@
       tr_change_en(e) {
         let a = ''
         this.tr_en.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      tr_change_ja(e) {
+        let a = ''
+        this.tr_ja.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ko(e) {
+        let a = ''
+        this.tr_ko.forEach((item, index) => {
           if (e == item.value) {
             a = item.name
           }
@@ -324,22 +384,25 @@
       },
     },
     created() {
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
-      }
       this.chain_list = this.getChainInfoStruct()
       this.all_data = this.$store.getters.wei_to_de
       this.getBlockNewTxPage()
       if (this.$store.getters.language === 'en') {
         this.options = this.chain_list.en_chain_arr
         this.options1 = this.tr_en
-        this.is_zh = false
-      } else {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
         this.options = this.chain_list.zh_chain_arr
         this.options1 = this.tr_zh
-        this.is_zh = true
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.options = this.chain_list.ja_chain_arr
+        this.options1 = this.tr_ja
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.options = this.chain_list.ko_chain_arr
+        this.options1 = this.tr_ko
+        this.is_zh = 3
       }
     },
     computed: {
@@ -350,13 +413,21 @@
     watch: {
       lang(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
+          this.is_zh = 0
           this.options = this.chain_list.zh_chain_arr
           this.options1 = this.tr_zh
-        } else {
-          this.is_zh = false
+        } else if (a == 'en') {
+          this.is_zh = 1
           this.options = this.chain_list.en_chain_arr
           this.options1 = this.tr_en
+        } else if (a == 'ja') {
+          this.is_zh = 2
+          this.options = this.chain_list.ja_chain_arr
+          this.options1 = this.tr_ja
+        } else if (a == 'ko') {
+          this.is_zh = 3
+          this.options = this.chain_list.ko_chain_arr
+          this.options1 = this.tr_ko
         }
       }
     }

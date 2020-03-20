@@ -29,9 +29,17 @@ export default {
       chain_list.en_chain_arr = [
         {'label': 'All', 'value': '', 'is_have': true},
       ]
+      chain_list.ja_chain_arr = [
+        {'label': '全部', 'value': '', 'is_have': true},
+      ]
+      chain_list.ko_chain_arr = [
+        {'label': '모두', 'value': '', 'is_have': true},
+      ]
       getChainInfoStruct().then(response => {
         chain_list.zh_chain_arr.push({'label': '主链', 'value': 0, 'is_have': true})
         chain_list.en_chain_arr.push({'label': 'Main chain', 'value': 0, 'is_have': true})
+        chain_list.ko_chain_arr.push({'label': '메인 체인', 'value': 0, 'is_have': true})
+        chain_list.ja_chain_arr.push({'label': 'メインチェーン', 'value': 0, 'is_have': true})
         if (response.data.childrens.length == 0 || response.data.childrens == null) {
         } else {
           response.data.childrens.forEach((item, index, self) => {
@@ -46,6 +54,16 @@ export default {
                 'value': item.chainId,
                 'is_have': false
               })
+              chain_list.ko_chain_arr.push({
+                'label': '작업 체인' + (index + 1) + '(' + item.chainId + '#)',
+                'value': item.chainId,
+                'is_have': false
+              })
+              chain_list.ja_chain_arr.push({
+                'label': 'タスクチェーン' + (index + 1) + '(' + item.chainId + '#)',
+                'value': item.chainId,
+                'is_have': false
+              })
             } else {
               chain_list.zh_chain_arr.push({
                 'label': '任务链' + (index + 1) + '(' + item.chainId + '#)',
@@ -57,6 +75,16 @@ export default {
                 'value': item.chainId,
                 'is_have': true
               })
+              chain_list.ko_chain_arr.push({
+                'label': '작업 체인' + (index + 1) + '(' + item.chainId + '#)',
+                'value': item.chainId,
+                'is_have': true
+              })
+              chain_list.ja_chain_arr.push({
+                'label': 'タスクチェーン' + (index + 1) + '(' + item.chainId + '#)',
+                'value': item.chainId,
+                'is_have': true
+              })
               item.childrens.forEach((item1, index1, self1) => {
                 chain_list.zh_chain_arr.push({
                   'label': '任务链' + (index + 1) + '(' + item.chainId + '#) / 交易链' + (index1 + 1) + '(' + item1.chainId + '#)',
@@ -65,6 +93,16 @@ export default {
                 })
                 chain_list.en_chain_arr.push({
                   'label': 'Task chain' + (index + 1) + '(' + item.chainId + '#) / Trading chain' + (index1 + 1) + '(' + item1.chainId + '#)',
+                  'value': item1.chainId,
+                  'is_have': false
+                })
+                chain_list.ko_chain_arr.push({
+                  'label': '작업 체인' + (index + 1) + '(' + item.chainId + '#) / 거래 체인' + (index1 + 1) + '(' + item1.chainId + '#)',
+                  'value': item1.chainId,
+                  'is_have': false
+                })
+                chain_list.ja_chain_arr.push({
+                  'label': 'タスクチェーン' + (index + 1) + '(' + item.chainId + '#) / トランザクションチェーン' + (index1 + 1) + '(' + item1.chainId + '#)',
                   'value': item1.chainId,
                   'is_have': false
                 })

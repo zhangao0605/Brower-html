@@ -22,7 +22,7 @@ service.interceptors.response.use(
     console.log('err' + error)
     let msg = ''
     if (error == 'Error: timeout of 200000ms exceeded') {
-      msg = '无效请求！请求超时！'
+      msg = 'Error: timeout of 200000ms exceeded！'
     } else {
       msg = error.message
     }

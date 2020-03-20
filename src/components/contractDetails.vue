@@ -5,8 +5,10 @@
     </div>
     <div class="con_title" style="font-size: 17px">
       {{$t('table.own_chain')}}：
-      <span style="color: #82848a;margin-left: 20px" v-show="is_zh">{{chainid_change_zh(all_data.chainId)}}</span>
-      <span style="color: #82848a;margin-left: 20px" v-show="!is_zh">{{chainid_change_en(all_data.chainId)}}</span>
+      <span style="color: #82848a;margin-left: 20px" v-show="is_zh==0">{{chainid_change_zh(all_data.chainId)}}</span>
+      <span style="color: #82848a;margin-left: 20px" v-show="is_zh==1">{{chainid_change_en(all_data.chainId)}}</span>
+      <span style="color: #82848a;margin-left: 20px" v-show="is_zh==2">{{chainid_change_ja(all_data.chainId)}}</span>
+      <span style="color: #82848a;margin-left: 20px" v-show="is_zh==3">{{chainid_change_ko(all_data.chainId)}}</span>
     </div>
 
     <el-table
@@ -94,7 +96,7 @@
         pagesize: 10,
         totla: 0,
         all_data: '',
-        is_zh: true,
+        is_zh: 0,
         chain_list: {},
       }
     },
@@ -133,6 +135,24 @@
       chainid_change_en(e) {
         let a = ''
         this.chain_list.en_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
           if (e == item.value) {
             a = item.label
           }
@@ -230,10 +250,14 @@
     created() {
       this.all_data = this.$store.getters.contract_details
       this.chain_list = this.getChainInfoStruct()
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
       }
       this.initialize_data_acquisition()
     },
@@ -245,9 +269,13 @@
     watch: {
       lang(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
-        } else {
-          this.is_zh = false
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       }
     }

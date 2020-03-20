@@ -2,17 +2,22 @@
   <div class="mb_con">
     <div class="con_title">
       {{$t("title.blockchain_details")}}:
-      <span class="to_tr color_choose" v-show="is_zh">{{chainid_change_zh(all_data.chainId)}}</span>
-      <span class="to_tr color_choose" v-show="!is_zh">{{chainid_change_en(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==0">{{chainid_change_zh(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==1">{{chainid_change_en(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==2">{{chainid_change_ja(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==3">{{chainid_change_ko(all_data.chainId)}}</span>
     </div>
     <div class="mb_search">
       <div class="mb_search1_2">
         <div class="mb_search2_1">
           <div class="mb_search2_1_input">
             <span class="el-icon-search mb_search2_1_input_icon"></span>
-            <el-input @input="handinput()" v-model="search_height":placeholder="$t('placeholder.placeholder_1')"></el-input>
+            <el-input @input="handinput()" v-model="search_height"
+                      :placeholder="$t('placeholder.placeholder_1')"></el-input>
           </div>
-          <el-button type="primary" class="mb_search_submit" @click="block_details_query()">{{$t("placeholder.search")}}</el-button>
+          <el-button type="primary" class="mb_search_submit" @click="block_details_query()">
+            {{$t("placeholder.search")}}
+          </el-button>
         </div>
       </div>
     </div>
@@ -30,14 +35,15 @@
         :label="$t('table.block_height')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr show_color_choose"  @click="to_block_page(scope.row.chainId,scope.row.height)" >{{scope.row.height}}</span>
+          <span class="to_tr show_color_choose" @click="to_block_page(scope.row.chainId,scope.row.height)">{{scope.row.height}}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.block_hash')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr show_color_choose" @click="hash_jump_block(scope.row.chainId,scope.row.height,scope.row.hash)" >{{slice_hash(scope.row.hash)}}</span>
+          <span class="to_tr show_color_choose"
+                @click="hash_jump_block(scope.row.chainId,scope.row.height,scope.row.hash)">{{slice_hash(scope.row.hash)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -48,18 +54,18 @@
         </template>
       </el-table-column>
       <!--<el-table-column-->
-        <!--:label="$t('table.current_committee_member')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span class="to_tr show_color_choose" @click="to_block_chaincommittee(scope.row.chainId)" >{{scope.row.chainIdCommitteeCount}}</span>-->
-        <!--</template>-->
+      <!--:label="$t('table.current_committee_member')"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span class="to_tr show_color_choose" @click="to_block_chaincommittee(scope.row.chainId)" >{{scope.row.chainIdCommitteeCount}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
       <!--<el-table-column-->
-        <!--:label="$t('table.miner')"-->
-        <!--align="center">-->
-        <!--<template slot-scope="scope">-->
-          <!--<span class="to_tr show_color_choose"  >{{slice_hash(scope.row.miner)}}</span>-->
-        <!--</template>-->
+      <!--:label="$t('table.miner')"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span class="to_tr show_color_choose"  >{{slice_hash(scope.row.miner)}}</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
     </el-table>
     <el-pagination
@@ -79,216 +85,249 @@
   import {
     getBlockDataByPage,
   } from '../api/interface'
-    export default {
-        name: "mainChainblock",
-      data() {
-        return {
-          search_height: '',
-          all_data:{},
-          tableData: [],
-          loading: false,
-          currentPage:1,
-          pagesize:10,
-          totla:0
+
+  export default {
+    name: "mainChainblock",
+    data() {
+      return {
+        search_height: '',
+        all_data: {},
+        tableData: [],
+        loading: false,
+        currentPage: 1,
+        pagesize: 10,
+        totla: 0
+      }
+    },
+    methods: {
+      currentPageChange(e) {
+        this.currentPage = e
+        this.loading = true
+        let data = {
+          "height": '',
+          "chainId": this.$store.getters.main_chainblock.chainId.toString(),
+          "page": this.currentPage,
+          "pagesize": 10,
+          "hash": '',
         }
+        getBlockDataByPage(data).then(response => {
+          this.loading = false
+          if (response.data.dataList.length == 0) {
+            this.tableData = []
+
+          } else {
+            this.tableData = response.data.dataList
+            this.totla = response.data.total
+          }
+        })
       },
-      methods:{
-        currentPageChange(e){
-          this.currentPage=e
-          this.loading = true
+      chainid_change_zh(e) {
+        let a = ''
+        this.chain_list.zh_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_en(e) {
+        let a = ''
+        this.chain_list.en_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      getBlockDataByPage() {
+        this.loading = true
+        let data = this.$store.getters.main_chainblock
+        getBlockDataByPage(data).then(response => {
+          this.loading = false
+          if (response.data.dataList.length == 0) {
+            this.tableData = []
+
+          } else {
+            this.tableData = response.data.dataList
+            this.totla = response.data.total
+          }
+        })
+
+      },
+      block_details_query() {
+        if (this.search_height == '') {
+          if (this.$store.getters.language == 'en') {
+            this.$message.error('The query block height cannot be empty!');
+          } else if (this.$store.getters.language == 'zh') {
+            this.$message.error('查询区块高度不能为空！');
+          } else if (this.$store.getters.language == 'ja') {
+            this.$message.error('クエリブロックの高さは空にできません！');
+          } else if (this.$store.getters.language == 'ko') {
+            this.$message.error('쿼리 블록 높이는 비워 둘 수 없습니다！');
+          }
+
+        } else {
           let data = {
-            "height": '',
-            "chainId": this.$store.getters.main_chainblock.chainId.toString(),
-            "page": this.currentPage,
+            "height": this.search_height,
+            "chainId": this.all_data.chainId,
+            "page": 1,
             "pagesize": 10,
             "hash": '',
           }
           getBlockDataByPage(data).then(response => {
-            this.loading = false
             if (response.data.dataList.length == 0) {
-              this.tableData = []
+              if (this.$store.getters.language == 'en') {
+                this.$message.error('The current block height query result is empty, please check and enter again!');
+              } else if (this.$store.getters.language == 'zh') {
+                this.$message.error('当前区块高度查询结果为空，请检查后再次输入！');
+              } else if (this.$store.getters.language == 'ja') {
+                this.$message.error('現在のブロックの高さのクエリ結果は空です。チェックした後にもう一度入力してください！');
+              } else if (this.$store.getters.language == 'ko') {
+                this.$message.error('현재 블록 높이 쿼리 결과가 비어 있습니다. 확인 후 다시 입력하십시오！');
+              }
 
             } else {
-              this.tableData = response.data.dataList
-              this.totla=response.data.total
+              this.$store.dispatch('app/setCrosschainBlock', data).then(() => {
+                this.$router.push({path: '/mainchain_blockdetails'})
+              })
             }
           })
-        },
-        chainid_change_zh(e) {
-          let a = ''
-          this.chain_list.zh_chain_arr.forEach((item, index) => {
-            if (e == item.value) {
-              a = item.label
-            }
-          })
-          return a
-        },
-        chainid_change_en(e) {
-          let a = ''
-          this.chain_list.en_chain_arr.forEach((item, index) => {
-            if (e == item.value) {
-              a = item.label
-            }
-          })
-          return a
-        },
-        getBlockDataByPage() {
-          this.loading = true
-          let data=this.$store.getters.main_chainblock
-          getBlockDataByPage(data).then(response => {
-            this.loading = false
-            if (response.data.dataList.length == 0) {
-              this.tableData = []
+        }
 
-            } else {
-              this.tableData = response.data.dataList
-              this.totla=response.data.total
-            }
-          })
-
-        },
-        block_details_query() {
-          if (this.search_height == '') {
-            if (this.$store.getters.language == 'en') {
-              this.$message.error('The query block height cannot be empty!');
-            } else {
-              this.$message.error('查询区块高度不能为空！');
-            }
-
-          } else {
-            let data = {
-              "height": this.search_height,
-              "chainId": this.all_data.chainId,
-              "page": 1,
-              "pagesize": 10,
-              "hash": '',
-            }
-            getBlockDataByPage(data).then(response => {
-              if (response.data.dataList.length == 0) {
-                if (this.$store.getters.language == 'en') {
-                  this.$message.error('The current block height query result is empty, please check and enter again!');
-                } else {
-                  this.$message.error('当前区块高度查询结果为空，请检查后再次输入！');
-                }
-
-              } else {
-                this.$store.dispatch('app/setCrosschainBlock', data).then(() => {
-                  this.$router.push({path: '/mainchain_blockdetails'})
-                })
-              }
-            })
-          }
-
-        },
-        handinput() {
-          if (/[^\d]/.test(this.search_height)) {
-            this.search_height = this.search_height.replace(/[^\d]/g, '');
-          }
-        },
-        to_block_page(e, q) {
-          this.chain_list.zh_chain_arr.forEach((item, index) => {
-            if (e == item.value) {
-              if (item.is_have == true) {
-                let data = {
-                  "height": q.toString(),
-                  "chainId": e.toString(),
-                  "pagesize": 10,
-                  "hash": '',
-                }
-                this.$store.dispatch('app/setCrosschainBlock', data).then(() => {
-                  this.$router.push({path: '/mainchain_blockdetails'})
-                })
-              }
-              else {
-                let data = {
-                  "height": q.toString(),
-                  "chainId": e.toString(),
-                  "pagesize": 10,
-                  "hash": '',
-                }
-                this.$store.dispatch('app/setCrosschainBlock_1', data).then(() => {
-                  this.$router.push({path: '/slicechain_blockdetails'})
-                })
-              }
-            }
-          })
-        },
-        hash_jump_block(id, height, hash) {
-          let a = ''
-          this.chain_list.zh_chain_arr.forEach((item, index) => {
-            if (id == item.value) {
-              a = item.is_have
-            }
-          })
-          if (a == true) {
-            let data = {
-              "height": height.toString(),
-              "chainId": id.toString(),
-              "pagesize": 10,
-              "hash": hash,
-            }
-            this.$store.dispatch('app/setCrosschainBlock', data).then(() => {
-              this.$router.push({path: '/mainchain_blockdetails'})
-            })
-          } else {
-            let data = {
-              "height": height.toString(),
-              "chainId": id.toString(),
-              "pagesize": 10,
-              "hash": hash,
-            }
-            this.$store.dispatch('app/setCrosschainBlock_1', data).then(() => {
-              this.$router.push({path: '/slicechain_blockdetails'})
-            })
-
-          }
-
-        },
-        to_block_chaincommittee(e) {
-          this.chain_list.zh_chain_arr.forEach((item, index) => {
-            if (e == item.value) {
-              if (item.is_have == true) {
-                let data = {"chainId": e.toString(), "epoch": ''}
-                this.$store.dispatch('app/setMainChaincommittee', data).then(() => {
-                  this.$router.push({path: '/mainchain_committee'})
-                })
-              }
-              else {
-                let data = {"chainId": e.toString(), "epoch": ''}
-                this.$store.dispatch('app/setUnmainChaincommittee', data).then(() => {
-                  this.$router.push({path: '/fragmentchain_committee'})
-                })
-              }
-            }
-          })
-        },
       },
-      created() {
-
-          this.all_data=this.$store.getters.main_chainblock
-        if (this.$store.getters.language == 'zh') {
-          this.is_zh = true
+      handinput() {
+        if (/[^\d]/.test(this.search_height)) {
+          this.search_height = this.search_height.replace(/[^\d]/g, '');
+        }
+      },
+      to_block_page(e, q) {
+        this.chain_list.zh_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            if (item.is_have == true) {
+              let data = {
+                "height": q.toString(),
+                "chainId": e.toString(),
+                "pagesize": 10,
+                "hash": '',
+              }
+              this.$store.dispatch('app/setCrosschainBlock', data).then(() => {
+                this.$router.push({path: '/mainchain_blockdetails'})
+              })
+            } else {
+              let data = {
+                "height": q.toString(),
+                "chainId": e.toString(),
+                "pagesize": 10,
+                "hash": '',
+              }
+              this.$store.dispatch('app/setCrosschainBlock_1', data).then(() => {
+                this.$router.push({path: '/slicechain_blockdetails'})
+              })
+            }
+          }
+        })
+      },
+      hash_jump_block(id, height, hash) {
+        let a = ''
+        this.chain_list.zh_chain_arr.forEach((item, index) => {
+          if (id == item.value) {
+            a = item.is_have
+          }
+        })
+        if (a == true) {
+          let data = {
+            "height": height.toString(),
+            "chainId": id.toString(),
+            "pagesize": 10,
+            "hash": hash,
+          }
+          this.$store.dispatch('app/setCrosschainBlock', data).then(() => {
+            this.$router.push({path: '/mainchain_blockdetails'})
+          })
         } else {
-          this.is_zh = false
-        }
-        this.chain_list = this.getChainInfoStruct()
-        this.getBlockDataByPage()
-      },
-      computed: {
-        lang() {
-          return this.$store.getters.language;
-        }
-      },
-      watch: {
-        lang(a, b) {
-          if (a == 'zh') {
-            this.is_zh = true
-          } else {
-            this.is_zh = false
+          let data = {
+            "height": height.toString(),
+            "chainId": id.toString(),
+            "pagesize": 10,
+            "hash": hash,
           }
+          this.$store.dispatch('app/setCrosschainBlock_1', data).then(() => {
+            this.$router.push({path: '/slicechain_blockdetails'})
+          })
+
+        }
+
+      },
+      to_block_chaincommittee(e) {
+        this.chain_list.zh_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            if (item.is_have == true) {
+              let data = {"chainId": e.toString(), "epoch": ''}
+              this.$store.dispatch('app/setMainChaincommittee', data).then(() => {
+                this.$router.push({path: '/mainchain_committee'})
+              })
+            } else {
+              let data = {"chainId": e.toString(), "epoch": ''}
+              this.$store.dispatch('app/setUnmainChaincommittee', data).then(() => {
+                this.$router.push({path: '/fragmentchain_committee'})
+              })
+            }
+          }
+        })
+      },
+    },
+    created() {
+
+      this.all_data = this.$store.getters.main_chainblock
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
+      }
+      this.chain_list = this.getChainInfoStruct()
+      this.getBlockDataByPage()
+    },
+    computed: {
+      lang() {
+        return this.$store.getters.language;
+      }
+    },
+    watch: {
+      lang(a, b) {
+        if (a == 'zh') {
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       }
     }
+  }
 </script>
 <style>
   .mb_con .mb_search2_1 .mb_search2_1_input input {
@@ -296,11 +335,12 @@
   }
 </style>
 <style scoped>
-  .el-pagination{
+  .el-pagination {
     float: right;
     margin-right: 3%;
     margin-top: 30px;
   }
+
   .show_color {
     color: #800080;
   }

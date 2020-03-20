@@ -2,8 +2,10 @@
   <div class="mcd_con">
     <div class="con_title">
       {{$t('table.own_chain')}}：
-      <span v-show="is_zh">{{chainid_change_zh(all_data.chainId)}}</span>
-      <span v-show="!is_zh">{{chainid_change_en(all_data.chainId)}}</span>
+      <span v-show="is_zh==0">{{chainid_change_zh(all_data.chainId)}}</span>
+      <span v-show="is_zh==1">{{chainid_change_en(all_data.chainId)}}</span>
+      <span v-show="is_zh==2">{{chainid_change_ja(all_data.chainId)}}</span>
+      <span v-show="is_zh==3">{{chainid_change_ko(all_data.chainId)}}</span>
     </div>
     <div
       class="con_title con1"
@@ -24,8 +26,10 @@
       <div class="mcd_all_con">
         <div class="mcd_all_con_left">{{$t('table.own_chain')}}</div>
         <div class="mcd_all_con_right">
-          <span v-show="is_zh">{{chainid_change_zh(all_data.chainId)}}</span>
-          <span v-show="!is_zh">{{chainid_change_en(all_data.chainId)}}</span>
+          <span v-show="is_zh==0">{{chainid_change_zh(all_data.chainId)}}</span>
+          <span v-show="is_zh==1">{{chainid_change_en(all_data.chainId)}}</span>
+          <span v-show="is_zh==2">{{chainid_change_ja(all_data.chainId)}}</span>
+          <span v-show="is_zh==3">{{chainid_change_ko(all_data.chainId)}}</span>
         </div>
       </div>
       <div class="mcd_all_con">
@@ -41,14 +45,10 @@
         >
           <span class="color_choose">{{data_length}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
           (
-          <span
-            v-show="is_zh"
-            v-for="item in transaction_data"
-          >{{item.txCount}} {{tr_change_zh(item.txType)}}，</span>
-          <span
-            v-show="!is_zh"
-            v-for="item in transaction_data"
-          >{{item.txCount}} {{tr_change_en(item.txType)}}，</span>
+          <span v-show="is_zh==0" v-for="item in transaction_data">{{item.txCount}} {{tr_change_zh(item.txType)}}，</span>
+          <span v-show="is_zh==1" v-for="item in transaction_data">{{item.txCount}} {{tr_change_en(item.txType)}}，</span>
+          <span v-show="is_zh==2" v-for="item in transaction_data">{{item.txCount}} {{tr_change_ja(item.txType)}}，</span>
+          <span v-show="is_zh==3" v-for="item in transaction_data">{{item.txCount}} {{tr_change_ko(item.txType)}}，</span>
           )
         </div>
       </div>
@@ -117,7 +117,7 @@
       return {
         all_data: "",
         memberdetails: "",
-        is_zh: true,
+        is_zh: 0,
         chain_list: {},
         is_height: "",
         transaction_data: [],
@@ -136,6 +136,24 @@
           { name: "Cross-chain transfer withdrawal", value: 4 },
           { name: "Cross-chain transfer deposit", value: 5 },
           { name: "Cross-chain transfer cancellation", value: 6 }
+        ],
+        tr_ja: [
+          {name: "全部", value: ""},
+          {name: "契約解除", value: 1},
+          {name: "契約取引", value: 2},
+          {name: "チェーン内トランザクション", value: 3},
+          {name: "クロスチェーン転送の引き出し", value: 4},
+          {name: "クロスチェーン振込預金", value: 5},
+          {name: "クロスチェーン転送キャンセル", value: 6}
+        ],
+        tr_ko: [
+          {name: "모두", value: ""},
+          {name: "계약 해제", value: 1},
+          {name: "계약 거래", value: 2},
+          {name: "인체 인 거래", value: 3},
+          {name: "교차 체인 이체 인출", value: 4},
+          {name: "교차 체인 이체 예금", value: 5},
+          {name: "교차 체인 전송 취소", value: 6}
         ],
         data_length: 0
       };
@@ -247,6 +265,42 @@
         });
         return a;
       },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      tr_change_ja(e) {
+        let a = ''
+        this.tr_ja.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ko(e) {
+        let a = ''
+        this.tr_ko.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
       to_transaction_details(e) {
         let data = {
           page: 1,
@@ -281,10 +335,14 @@
     created() {
       this.chain_list = this.getChainInfoStruct();
       this.is_height = this.$store.getters.crosschain_to_block_detil_1.height;
-      if (this.$store.getters.language == "zh") {
-        this.is_zh = true;
-      } else {
-        this.is_zh = false;
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
       }
       this.initialization_data();
     },
@@ -295,10 +353,14 @@
     },
     watch: {
       lang(a, b) {
-        if (a == "zh") {
-          this.is_zh = true;
-        } else {
-          this.is_zh = false;
+        if (a == 'zh') {
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       }
     }

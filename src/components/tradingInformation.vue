@@ -53,8 +53,10 @@
         :label="$t('table.own_chain')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr show_color_choose" v-show="is_zh" @click="to_unfragmented_chain(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
-          <span class="to_tr show_color_choose" v-show="!is_zh" @click="to_unfragmented_chain(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==0" @click="to_unfragmented_chain(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==1" @click="to_unfragmented_chain(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==2" @click="to_unfragmented_chain(scope.row.chainId)">{{chainid_change_ja(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==3" @click="to_unfragmented_chain(scope.row.chainId)">{{chainid_change_ko(scope.row.chainId)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -68,8 +70,10 @@
         :label="$t('table.transaction_type')"
         align="center">
         <template slot-scope="scope">
-          <span v-show="is_zh">{{tr_change_zh(scope.row.txType)}}</span>
-          <span v-show="!is_zh">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==0">{{tr_change_zh(scope.row.txType)}}</span>
+          <span v-show="is_zh==1">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==2">{{tr_change_ja(scope.row.txType)}}</span>
+          <span v-show="is_zh==3">{{tr_change_ko(scope.row.txType)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -134,7 +138,7 @@
         value: '',
         value1: '',
         tableData: [],
-        is_zh: true,
+        is_zh: 0,
         tr_zh: [
           {'name': '全部', 'value': ''},
           {'name': '合约发布', 'value': 1},
@@ -145,13 +149,31 @@
           {'name': '跨链转账撤销', 'value': 6},
         ],
         tr_en: [
-          { name: "All", value: "" },
-          { name: "Contract release", value: 1 },
-          { name: "Contract transaction", value: 2 },
-          { name: "Intra-chain trading", value: 3 },
-          { name: "Cross-chain transfer withdrawal", value: 4 },
-          { name: "Cross-chain transfer deposit", value: 5 },
-          { name: "Cross-chain transfer cancellation", value: 6 }
+          {name: "All", value: ""},
+          {name: "Contract release", value: 1},
+          {name: "Contract transaction", value: 2},
+          {name: "Intra-chain trading", value: 3},
+          {name: "Cross-chain transfer withdrawal", value: 4},
+          {name: "Cross-chain transfer deposit", value: 5},
+          {name: "Cross-chain transfer cancellation", value: 6}
+        ],
+        tr_ja: [
+          {name: "全部", value: ""},
+          {name: "契約解除", value: 1},
+          {name: "契約取引", value: 2},
+          {name: "チェーン内トランザクション", value: 3},
+          {name: "クロスチェーン転送の引き出し", value: 4},
+          {name: "クロスチェーン振込預金", value: 5},
+          {name: "クロスチェーン転送キャンセル", value: 6}
+        ],
+        tr_ko: [
+          {name: "모두", value: ""},
+          {name: "계약 해제", value: 1},
+          {name: "계약 거래", value: 2},
+          {name: "인체 인 거래", value: 3},
+          {name: "교차 체인 이체 인출", value: 4},
+          {name: "교차 체인 이체 예금", value: 5},
+          {name: "교차 체인 전송 취소", value: 6}
         ],
         loading: false,
         currentPage: 1,
@@ -180,6 +202,42 @@
         })
         return a
       },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      tr_change_ja(e) {
+        let a = ''
+        this.tr_ja.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ko(e) {
+        let a = ''
+        this.tr_ko.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
       tr_change_zh(e) {
         let a = ''
         this.tr_zh.forEach((item, index) => {
@@ -198,6 +256,7 @@
         })
         return a
       },
+
       getBlockNewTxPage() {
         this.loading1 = true
         let data = this.all_data
@@ -250,8 +309,12 @@
         if (this.search_transaction == '') {
           if (this.$store.getters.language == 'en') {
             this.$message.error('Query transaction details transaction hash/account address cannot be empty!');
-          } else {
+          } else if (this.$store.getters.language == 'zh') {
             this.$message.error('查询交易详情交易哈希不能为空！');
+          } else if (this.$store.getters.language == 'ja') {
+            this.$message.error('クエリトランザクションの詳細トランザクションハッシュは空にできません！');
+          } else if (this.$store.getters.language == 'ko') {
+            this.$message.error('트랜잭션 세부 사항 조회 트랜잭션 해시는 비워 둘 수 없습니다.！');
           }
 
         } else {
@@ -265,36 +328,35 @@
             if (response.data.transactionsList.dataList.length == 0) {
               if (this.$store.getters.language == 'en') {
                 this.$message.error('The current transaction details transaction hash/account address query result is empty, please check and enter again!');
-              } else {
+              } else if (this.$store.getters.language == 'zh') {
                 this.$message.error('当前交易详情交易哈希查询结果为空，请检查后再次输入！');
+              } else if (this.$store.getters.language == 'ja') {
+                this.$message.error('現在のトランザクションの詳細トランザクションハッシュクエリの結果は空です。もう一度確認して入力してください！');
+              } else if (this.$store.getters.language == 'ko') {
+                this.$message.error('현재 거래 세부 정보 거래 해시 조회 결과가 비어 있습니다. 확인 후 다시 입력하십시오.！');
               }
             } else {
               if (response.data.transactionsList.dataList[0].txType == 3) {
                 this.$store.dispatch('app/setSearchTr1', data).then(() => {
                   this.$router.push({path: '/intrachain_transfer'})
                 })
-              }
-              else if (response.data.transactionsList.dataList[0].txType == 2) {
+              } else if (response.data.transactionsList.dataList[0].txType == 2) {
                 this.$store.dispatch('app/setSearchTr3', data).then(() => {
                   this.$router.push({path: '/contract_transaction'})
                 })
-              }
-              else if (response.data.transactionsList.dataList[0].txType == 1) {
+              } else if (response.data.transactionsList.dataList[0].txType == 1) {
                 this.$store.dispatch('app/setSearchTr4', data).then(() => {
                   this.$router.push({path: '/contract_release'})
                 })
-              }
-              else if (response.data.transactionsList.dataList[0].txType == 4) {
+              } else if (response.data.transactionsList.dataList[0].txType == 4) {
                 this.$store.dispatch('app/setSearchTr2', data).then(() => {
                   this.$router.push({path: '/transfer_withdrawal'})
                 })
-              }
-              else if (response.data.transactionsList.dataList[0].txType == 5) {
+              } else if (response.data.transactionsList.dataList[0].txType == 5) {
                 this.$store.dispatch('app/setSearchTr5', data).then(() => {
                   this.$router.push({path: '/transfer_deposit'})
                 })
-              }
-              else if (response.data.transactionsList.dataList[0].txType == 6) {
+              } else if (response.data.transactionsList.dataList[0].txType == 6) {
                 this.$store.dispatch('app/setSearchTr6', data).then(() => {
                   this.$router.push({path: '/transfer_cancellation'})
                 })
@@ -314,28 +376,23 @@
           this.$store.dispatch('app/setSearchTr1', data).then(() => {
             this.$router.push({path: '/intrachain_transfer'})
           })
-        }
-        else if (type == 2) {
+        } else if (type == 2) {
           this.$store.dispatch('app/setSearchTr3', data).then(() => {
             this.$router.push({path: '/contract_transaction'})
           })
-        }
-        else if (type == 1) {
+        } else if (type == 1) {
           this.$store.dispatch('app/setSearchTr4', data).then(() => {
             this.$router.push({path: '/contract_release'})
           })
-        }
-        else if (type == 4) {
+        } else if (type == 4) {
           this.$store.dispatch('app/setSearchTr2', data).then(() => {
             this.$router.push({path: '/transfer_withdrawal'})
           })
-        }
-        else if (type == 5) {
+        } else if (type == 5) {
           this.$store.dispatch('app/setSearchTr5', data).then(() => {
             this.$router.push({path: '/transfer_deposit'})
           })
-        }
-        else if (type == 6) {
+        } else if (type == 6) {
           this.$store.dispatch('app/setSearchTr6', data).then(() => {
             this.$router.push({path: '/transfer_cancellation'})
           })
@@ -395,22 +452,25 @@
       }
     },
     created() {
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
-      }
       this.chain_list = this.getChainInfoStruct()
       this.all_data = this.$store.getters.main_chain_to_tr
       this.getBlockNewTxPage()
       if (this.$store.getters.language === 'en') {
         this.options = this.chain_list.en_chain_arr
         this.options1 = this.tr_en
-        this.is_zh = false
-      } else {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
         this.options = this.chain_list.zh_chain_arr
         this.options1 = this.tr_zh
-        this.is_zh = true
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.options = this.chain_list.ja_chain_arr
+        this.options1 = this.tr_ja
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.options = this.chain_list.ko_chain_arr
+        this.options1 = this.tr_ko
+        this.is_zh = 3
       }
     },
     computed: {
@@ -420,15 +480,23 @@
     },
     watch: {
       lang(a, b) {
+        console.log(a)
         if (a == 'zh') {
-          let a=''
-          this.is_zh = true
+          this.is_zh = 0
           this.options = this.chain_list.zh_chain_arr
           this.options1 = this.tr_zh
-        } else {
-          this.is_zh = false
+        } else if (a == 'en') {
+          this.is_zh = 1
           this.options = this.chain_list.en_chain_arr
           this.options1 = this.tr_en
+        } else if (a == 'ja') {
+          this.is_zh = 2
+          this.options = this.chain_list.ja_chain_arr
+          this.options1 = this.tr_ja
+        } else if (a == 'ko') {
+          this.is_zh = 3
+          this.options = this.chain_list.ko_chain_arr
+          this.options1 = this.tr_ko
         }
       }
     }

@@ -17,8 +17,10 @@
         <div class="ad_amount_deail">
           <div   :class="[{'ad_amount_deail_left':true}]" v-for="item,index in account_data.details">
             <div >
-              <span class="to_tr"style="color: #800080;" v-show="is_zh">{{chainid_change_zh(item.chainId)}}</span>
-              <span class="to_tr"style="color: #800080;" v-show="!is_zh">{{chainid_change_en(item.chainId)}}</span><br>
+              <span class="to_tr"style="color: #800080;" v-show="is_zh==0">{{chainid_change_zh(item.chainId)}}</span>
+              <span class="to_tr"style="color: #800080;" v-show="is_zh==1">{{chainid_change_en(item.chainId)}}</span><br>
+              <span class="to_tr"style="color: #800080;" v-show="is_zh==2">{{chainid_change_ja(item.chainId)}}</span><br>
+              <span class="to_tr"style="color: #800080;" v-show="is_zh==3">{{chainid_change_ko(item.chainId)}}</span><br>
               <span>{{item.balance==''?0:scientificCounting(item.balance)}} TKM</span>
             </div>
           </div>
@@ -56,8 +58,10 @@
         :label="$t('table.transaction_type')"
         align="center">
         <template slot-scope="scope">
-          <span v-show="is_zh">{{tr_change_zh(scope.row.txType)}}</span>
-          <span v-show="!is_zh">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==0">{{tr_change_zh(scope.row.txType)}}</span>
+          <span v-show="is_zh==1">{{tr_change_en(scope.row.txType)}}</span>
+          <span v-show="is_zh==2">{{tr_change_ja(scope.row.txType)}}</span>
+          <span v-show="is_zh==3">{{tr_change_ko(scope.row.txType)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -119,7 +123,7 @@
         chain_data: '',
         loading: false,
         chain_list: {},
-        is_zh: true,
+        is_zh: 0,
         tr_zh: [
           {'name': '合约发布', 'value': 1},
           {'name': '合约交易', 'value': 2},
@@ -135,6 +139,23 @@
           {'name': 'Cross-chain transfer withdrawal', 'value': 4},
           {'name': 'Cross-chain transfer deposit', 'value': 5},
           {'name': 'Cross-chain transfer cancellation', 'value': 6},
+        ],  tr_ja: [
+          {name: "全部", value: ""},
+          {name: "契約解除", value: 1},
+          {name: "契約取引", value: 2},
+          {name: "チェーン内トランザクション", value: 3},
+          {name: "クロスチェーン転送の引き出し", value: 4},
+          {name: "クロスチェーン振込預金", value: 5},
+          {name: "クロスチェーン転送キャンセル", value: 6}
+        ],
+        tr_ko: [
+          {name: "모두", value: ""},
+          {name: "계약 해제", value: 1},
+          {name: "계약 거래", value: 2},
+          {name: "인체 인 거래", value: 3},
+          {name: "교차 체인 이체 인출", value: 4},
+          {name: "교차 체인 이체 예금", value: 5},
+          {name: "교차 체인 전송 취소", value: 6}
         ],
         get_data: '',
         account_data: ''
@@ -309,6 +330,42 @@
         }
         return a
       },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      tr_change_ja(e) {
+        let a = ''
+        this.tr_ja.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ko(e) {
+        let a = ''
+        this.tr_ko.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
       see_trfor_hash(id, type, hash) {
         let data = {
           'page': 1,
@@ -352,10 +409,14 @@
     },
     created() {
       this.get_data = this.$store.getters.address_details
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
       }
       this.chain_list = this.getChainInfoStruct()
       this.getAccountByAddress()
@@ -369,9 +430,13 @@
     watch: {
       lang(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
-        } else {
-          this.is_zh = false
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       }
     }

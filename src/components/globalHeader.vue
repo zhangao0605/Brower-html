@@ -11,6 +11,8 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="language_switching('zh')">中文</el-dropdown-item>
             <el-dropdown-item @click.native="language_switching('en')">English</el-dropdown-item>
+            <el-dropdown-item @click.native="language_switching('ja')">日本語</el-dropdown-item>
+            <el-dropdown-item @click.native="language_switching('ko')">한국어</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -42,8 +44,12 @@
       language_is() {
         if (this.$i18n.locale === 'en') {
           this.language = 'English'
-        } else {
+        } else if(this.$i18n.locale === 'zh') {
           this.language = '中文'
+        }else if(this.$i18n.locale === 'ja') {
+          this.language = '日本語'
+        }else if(this.$i18n.locale === 'ko') {
+          this.language = '한국어'
         }
       },
       go_home() {

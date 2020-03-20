@@ -2,8 +2,10 @@
   <div class="mcd_con">
     <div class="con_title">
       {{$t('table.own_chain')}}：
-      <span v-show="is_zh">{{chainid_change_zh(identification_id)}}</span>
-      <span v-show="!is_zh">{{chainid_change_en(identification_id)}}</span>
+      <span v-show="is_zh==0">{{chainid_change_zh(identification_id)}}</span>
+      <span v-show="is_zh==1">{{chainid_change_en(identification_id)}}</span>
+      <span v-show="is_zh==2">{{chainid_change_ja(identification_id)}}</span>
+      <span v-show="is_zh==3">{{chainid_change_ko(identification_id)}}</span>
     </div>
     <div class="con_title con1 " style="margin-top:20px">
       {{$t('title.blockchain_details')}} #{{all_data.height==undefined?is_height:all_data.height}}
@@ -24,10 +26,10 @@
           {{$t('table.own_chain')}}
         </div>
         <div class="mcd_all_con_right color_choose">
-          <span v-show="is_zh"
-                @click="to_fragmented_chain(all_data.chainId)">{{chainid_change_zh(all_data.chainId)}}</span>
-          <span v-show="!is_zh"
-                @click="to_fragmented_chain(all_data.chainId)">{{chainid_change_en(all_data.chainId)}}</span>
+          <span v-show="is_zh==0" @click="to_fragmented_chain(all_data.chainId)">{{chainid_change_zh(all_data.chainId)}}</span>
+          <span v-show="is_zh==1" @click="to_fragmented_chain(all_data.chainId)">{{chainid_change_en(all_data.chainId)}}</span>
+          <span v-show="is_zh==2" @click="to_fragmented_chain(all_data.chainId)">{{chainid_change_ja(all_data.chainId)}}</span>
+          <span v-show="is_zh==3" @click="to_fragmented_chain(all_data.chainId)">{{chainid_change_ko(all_data.chainId)}}</span>
         </div>
       </div>
       <div class="mcd_all_con">
@@ -109,7 +111,7 @@
       return {
         all_data: '',
         memberdetails: '',
-        is_zh: true,
+        is_zh: 0,
         chain_list: {},
         is_height: '',
         transaction_data: [],
@@ -129,6 +131,24 @@
           {'name': 'Cross-chain transfer deposit', 'value': 5},
           {'name': 'Cross-chain transfer cancellation', 'value': 6},
         ],
+        tr_ja: [
+          {name: "全部", value: ""},
+          {name: "契約解除", value: 1},
+          {name: "契約取引", value: 2},
+          {name: "チェーン内トランザクション", value: 3},
+          {name: "クロスチェーン転送の引き出し", value: 4},
+          {name: "クロスチェーン振込預金", value: 5},
+          {name: "クロスチェーン転送キャンセル", value: 6}
+        ],
+        tr_ko: [
+          {name: "모두", value: ""},
+          {name: "계약 해제", value: 1},
+          {name: "계약 거래", value: 2},
+          {name: "인체 인 거래", value: 3},
+          {name: "교차 체인 이체 인출", value: 4},
+          {name: "교차 체인 이체 예금", value: 5},
+          {name: "교차 체인 전송 취소", value: 6}
+        ],
         identification_id: ''
       }
 
@@ -146,6 +166,24 @@
       tr_change_en(e) {
         let a = ''
         this.tr_en.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ja(e) {
+        let a = ''
+        this.tr_ja.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.name
+          }
+        })
+        return a
+      },
+      tr_change_ko(e) {
+        let a = ''
+        this.tr_ko.forEach((item, index) => {
           if (e == item.value) {
             a = item.name
           }
@@ -237,6 +275,24 @@
         })
         return a
       },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
       to_address_details(e) {
         let data = {"chainId": this.$store.getters.crosschain_to_block_detil.chainId.toString(), "address": e}
         this.$store.dispatch('app/setAddressDetails', data).then(() => {
@@ -265,10 +321,14 @@
       this.chain_list = this.getChainInfoStruct()
       this.is_height = this.$store.getters.crosschain_to_block_detil.height
       this.identification_id = this.$store.getters.crosschain_to_block_detil.chainId
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
       }
       this.initialize_data()
     },
@@ -280,9 +340,13 @@
     watch: {
       lang(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
-        } else {
-          this.is_zh = false
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       }
     }

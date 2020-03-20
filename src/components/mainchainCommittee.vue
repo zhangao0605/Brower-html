@@ -2,8 +2,10 @@
   <div class="cc_con">
     <div class="con_title">
       {{$t('table.own_chain')}}：
-      <span class="to_tr color_choose" v-show="is_zh">{{chainid_change_zh(all_data.chainId)}}</span>
-      <span class="to_tr color_choose" v-show="!is_zh">{{chainid_change_en(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==0">{{chainid_change_zh(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==1">{{chainid_change_en(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==2">{{chainid_change_ja(all_data.chainId)}}</span>
+      <span class="to_tr color_choose" v-show="is_zh==3">{{chainid_change_ko(all_data.chainId)}}</span>
     </div>
     <div class="con_title" style="font-size: 17px">
       {{$t('table.committee_member_details')}} #{{get_committeedata.epoch}}
@@ -14,9 +16,14 @@
           {{$t('table.own_chain')}}
         </div>
         <div class="cc_all_con_right ">
-          <span class="to_tr color_choose show_color_choose" v-show="is_zh" @click="to_chain(get_committeedata.chainId)">{{chainid_change_zh(get_committeedata.chainId)}}</span>
-          <span class="to_tr color_choose show_color_choose" v-show="!is_zh"
+          <span class="to_tr color_choose show_color_choose" v-show="is_zh==0"
+                @click="to_chain(get_committeedata.chainId)">{{chainid_change_zh(get_committeedata.chainId)}}</span>
+          <span class="to_tr color_choose show_color_choose" v-show="is_zh==1"
                 @click="to_chain(get_committeedata.chainId)">{{chainid_change_en(get_committeedata.chainId)}}</span>
+          <span class="to_tr color_choose show_color_choose" v-show="is_zh==2"
+                @click="to_chain(get_committeedata.chainId)">{{chainid_change_ja(get_committeedata.chainId)}}</span>
+          <span class="to_tr color_choose show_color_choose" v-show="is_zh==3"
+                @click="to_chain(get_committeedata.chainId)">{{chainid_change_ko(get_committeedata.chainId)}}</span>
         </div>
       </div>
       <div class="cc_all_con">
@@ -111,7 +118,7 @@
         tableData: [],
         loading: false,
         chain_list: {},
-        is_zh: true,
+        is_zh: 0,
         currentPage: 1,
         pagesize: 10,
         totla: 0,
@@ -149,6 +156,24 @@
       chainid_change_en(e) {
         let a = ''
         this.chain_list.en_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
           if (e == item.value) {
             a = item.label
           }
@@ -270,10 +295,14 @@
       },
     },
     created() {
-      if (this.$store.getters.language == 'zh') {
-        this.is_zh = true
-      } else {
-        this.is_zh = false
+      if (this.$store.getters.language === 'en') {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.is_zh = 3
       }
       this.all_data = this.$store.getters.main_chaincommittee
       this.chain_list = this.getChainInfoStruct()
@@ -287,9 +316,13 @@
     watch: {
       lang(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
-        } else {
-          this.is_zh = false
+          this.is_zh = 0
+        } else if (a == 'en') {
+          this.is_zh = 1
+        } else if (a == 'ja') {
+          this.is_zh = 2
+        } else if (a == 'ko') {
+          this.is_zh = 3
         }
       }
     }

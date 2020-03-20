@@ -29,8 +29,10 @@
         :label="$t('table.own_chain')"
         align="center">
         <template slot-scope="scope">
-          <span class="to_tr show_color_choose" v-show="is_zh" @click="to_chain(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
-          <span class="to_tr show_color_choose" v-show="!is_zh" @click="to_chain(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==0" @click="to_chain(scope.row.chainId)">{{chainid_change_zh(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==1" @click="to_chain(scope.row.chainId)">{{chainid_change_en(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==2" @click="to_chain(scope.row.chainId)">{{chainid_change_ja(scope.row.chainId)}}</span>
+          <span class="to_tr show_color_choose" v-show="is_zh==3" @click="to_chain(scope.row.chainId)">{{chainid_change_ko(scope.row.chainId)}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -151,6 +153,24 @@
         })
         return a
       },
+      chainid_change_ja(e) {
+        let a = ''
+        this.chain_list.ja_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
+      chainid_change_ko(e) {
+        let a = ''
+        this.chain_list.ko_chain_arr.forEach((item, index) => {
+          if (e == item.value) {
+            a = item.label
+          }
+        })
+        return a
+      },
       to_chain(e) {
         if (e == 0) {
           this.$router.push({path: '/main_chain'})
@@ -226,10 +246,16 @@
       this.block_details_query()
       if (this.$store.getters.language === 'en') {
         this.options = this.chain_list.en_chain_arr
-        this.is_zh = false
-      } else {
+        this.is_zh = 1
+      } else if (this.$store.getters.language === 'zh') {
         this.options = this.chain_list.zh_chain_arr
-        this.is_zh = true
+        this.is_zh = 0
+      } else if (this.$store.getters.language === 'ja') {
+        this.options = this.chain_list.ja_chain_arr
+        this.is_zh = 2
+      } else if (this.$store.getters.language === 'ko') {
+        this.options = this.chain_list.ko_chain_arr
+        this.is_zh = 3
       }
     },
     computed: {
@@ -240,11 +266,17 @@
     watch: {
       lang(a, b) {
         if (a == 'zh') {
-          this.is_zh = true
+          this.is_zh = 0
           this.options = this.chain_list.zh_chain_arr
-        } else {
+        } else if (a == 'en') {
+          this.is_zh = 1
           this.options = this.chain_list.en_chain_arr
-          this.is_zh = false
+        } else if (a == 'ja') {
+          this.is_zh = 2
+          this.options = this.chain_list.ja_chain_arr
+        } else if (a == 'ko') {
+          this.is_zh = 3
+          this.options = this.chain_list.ko_chain_arr
         }
       }
     }
